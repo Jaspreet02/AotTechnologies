@@ -1,0 +1,11 @@
+<div class="mb-3">
+  <label for="queryFor" class="form-label">Query</label>
+  <input type="text" class="form-control" id="query" [(ngModel)]="queryValue" placeholder="Search">
+</div>
+<div class="mb-3">
+  <label for="messageFor" class="form-label">Message</label>
+  <textarea class="form-control" id="message" [(ngModel)]="messageValue" rows="5"></textarea>
+</div>
+<div>
+  <button type="button" class="btn btn-primary btn-sm" (click)="search()">Search</button>
+</div>
