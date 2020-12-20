@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
@@ -8,9 +9,14 @@ import { Router } from '@angular/router';
 export class HomeComponent {
   queryValue: string;
   messageValue: string;
-  constructor(private router: Router) {
+  url: string;
+
+  constructor(private router: Router,private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+    this.url = baseUrl;
   }
   search() {
+    //first implemented logic in typescript but after i move into back end.
+    this.http.get<result>(this.url + 'api/Home/GetCount/' + this.queryValue + '/' + this.messageValue ).subscribe(result => {
     var count = 0;
     var reverseCount = 0;
     var palindromeCount = 0;
@@ -24,8 +30,12 @@ export class HomeComponent {
       for (var i = 0; i < stringList.length; i++) {
         if (this.checkPalindrom(stringList[i])) { palindromeCount++; }
       }
-    }
-    this.router.navigate(['/counter', count, reverseCount, palindromeCount]);
+     }
+      console.log(count);
+      console.log(reverseCount);
+      console.log(palindromeCount);
+     this.router.navigate(['/counter', result.count, result.reverseCount,result.palindromeCount]);
+   }, error => console.error(error));
     // this.router.navigate(['counter', { count: 5, reverseCount: 10 }]);
     // event.preventDefault();
   }
@@ -33,4 +43,10 @@ export class HomeComponent {
   checkPalindrom(str) {
     return str == str.split('').reverse().join('');
   }
+}
+
+interface result {
+  count: number;
+  reverseCount: number;
+  palindromeCount: number;
 }
